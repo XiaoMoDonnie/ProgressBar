@@ -31,24 +31,23 @@
 ```
   const _tzProgressBar = new TzProgressBar({
             container: 'demo-progressbar-1', //容器
-            width: '20px', //设置进度条的宽度
+            width: '20px', //进度条大小
             fontSize: '14px', //文字大小 
             radius: '20px', //进度条圆角
-            borderSize: null, //进度条边框
-            borderColor: null, //进度条边框颜色
-            borderLine: null, //进度条边框线样式
-            showNum: true, //是否显示百分比
-            maxLeft: 100, //控制文本范围 移动端测试 适合85 pc端100
-            textLeft: 15, //用于控制进度条文本位置精准度
+            speed: '', //进度条的速度
+            border: null, //进度条边框 
+            showPercent: true, //是否显示百分比
+            maxLeft: 90, //控制文本范围最大值，以免超出进度条范围 移动端测试 适合85 pc端100
+            textLeft: 15, //用于控制进度条文本位置精准度，以免超出进度条范围
             textAlign: 'c', //c=居中  t=顶部  b=底部
-            oldText: '已经完成', //已完成的提示文字
-            newText: '正在完善', //正在完成提示文字
+            oldText: '已完成', //已完成的提示文字
+            newText: '完善中', //正在完成提示文字
             showOldVal: true, //是否显示旧的值
             color: '#5FB878', //进度条颜色
             bgColor: '#e2e2e2', //进度条背景颜色
             oldColor: '#393D49', //旧的进度条颜色
             textColor: '#fff', //开启文字居中后生效
-            oldVal: 90, //已完成进度的值 
+            value: 90, //已完成进度的值 
             sub: function(callback) {}, //进度条减少的时候回调
             add: function(callback) {}, //进度条增加时候的回调
             success: function(callback) {}, //完成时候的回调
