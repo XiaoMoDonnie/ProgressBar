@@ -1,6 +1,9 @@
-# ProgressBar
-一个简单的进度条封装,本项目基于Jquery,如果您有需求可以自己修改为js版本
+## ProgressBar
+  一个简单的进度条封装,本项目基于Jquery,如果您有需求可以自己修改为js版本
 
+
+## 在线演示
+  [进度条在线示例传送门](https://evan925.github.io/ProgressBar/index.html)
 
 ## 初始化
 
