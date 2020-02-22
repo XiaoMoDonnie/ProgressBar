@@ -5,24 +5,23 @@
         if (!(this instanceof TzProgressBar)) { return new TzProgressBar(options); }
         this.options = this.extend({
             container: null, //容器
-            width: '20px', //设置进度条的宽度
+            width: '20px', //进度条大小
             fontSize: '14px', //文字大小 
             radius: '20px', //进度条圆角
-            borderSize: null, //进度条边框
-            borderColor: null, //进度条边框颜色
-            borderLine: null, //进度条边框线样式
-            showNum: true, //是否显示百分比
-            maxLeft: 100, //控制文本范围 移动端测试 适合85 pc端100
-            textLeft: 15, //用于控制进度条文本位置精准度
+            speed: '', //进度条的速度
+            border: null, //进度条边框 
+            showPercent: true, //是否显示百分比
+            maxLeft: 90, //控制文本范围最大值，以免超出进度条范围 移动端测试 适合85 pc端100
+            textLeft: 15, //用于控制进度条文本位置精准度，以免超出进度条范围
             textAlign: 'c', //c=居中  t=顶部  b=底部
-            oldText: '已经完成', //已完成的提示文字
-            newText: '正在完善', //正在完成提示文字
+            oldText: '已完成', //已完成的提示文字
+            newText: '完善中', //正在完成提示文字
             showOldVal: true, //是否显示旧的值
             color: '#5FB878', //进度条颜色
             bgColor: '#e2e2e2', //进度条背景颜色
             oldColor: '#393D49', //旧的进度条颜色
             textColor: '#fff', //开启文字居中后生效
-            oldVal: 90, //已完成进度的值 
+            value: 90, //已完成进度的值 
             sub: function(callback) {}, //进度条减少的时候回调
             add: function(callback) {}, //进度条增加时候的回调
             success: function(callback) {}, //完成时候的回调
@@ -51,6 +50,7 @@
                 _$progressbarContent: _$container.find('.tz-progressbar-content'), //进度条颜色区域
                 _$oldPercentText: _$container.find('.tz-progressbar-oldpercent'), //已完成进度的文字提示
                 _$newPercentText: _$container.find('.tz-progressbar-newpercent'), //正在完成进度的文字提示
+                _$progressbarStyle: _$container.find('.tz-progressbar-style'), //公共样式
                 _$progressBarBgColor: _$container.find('.tz-progressbar-bg'), //背景颜色区域
                 _$progressBarOldValColor: _$container.find('.tz-progressbar-oldval'), //已完成进度颜色区域
                 _$progressBarNewValColor: _$container.find('.tz-progressbar-newval'), //正在完成进度颜色区域
@@ -67,7 +67,7 @@
             let _newVal = _this.newProgressBarVal;
             _options.sub(_newVal); //回调
 
-            if (_newVal <= _options.oldVal) {
+            if (_newVal <= _options.value) {
                 _elements._$progressBarNewValColor.css({
                     'z-index': 3
                 });
@@ -106,7 +106,7 @@
 
             let _newVal = _this.newProgressBarVal;
             _options.add(_newVal); //回调
-            if (_newVal > _options.oldVal) {
+            if (_newVal > _options.value) {
                 _elements._$progressBarNewValColor.css({
                     'z-index': 1
                 });
@@ -158,18 +158,25 @@
             let _options = _this.options;
 
             //设置样式 
+            _elements._$progressbarStyle.css({
+                'transition': 'all ' + _options.speed + ' ease'
+            });
+            let _max = _options.value >= _options.maxLeft ? _options.maxLeft : _options.value;
+
             _elements._$oldPercentText.css({
-                'left': (_options.oldVal - _options.textLeft) < 0 ? 10 : (_options.oldVal - _options.textLeft) + '%',
+                'transition': 'all ' + _options.speed + ' ease',
+                'left': (_max - _options.textLeft) < 0 ? 10 : (_max - _options.textLeft) + '%',
             });
             _elements._$newPercentText.css({
-                'left': (_this.newProgressBarVal - _options.textLeft) < 0 ? 10 : (_this.newProgressBarVal - _options.textLeft) + '%'
+                'transition': 'all ' + _options.speed + ' ease',
+                'left': (_max - _options.textLeft) < 0 ? 10 : (_max - _options.textLeft) + '%'
             });
 
             _elements._$progressBarBgColor.css({
                 'background-color': _options.bgColor,
             });
             _elements._$progressBarOldValColor.css({
-                'width': _options.oldVal + '%',
+                'width': _options.value + '%',
                 'background-color': _options.oldColor,
             });
             _elements._$progressBarNewValColor.css({
@@ -207,23 +214,23 @@
                 })
 
                 _elements._$oldPercentText.css({
-                    'top': '-20px',
+                    'top': '0px',
                     'line-height': _options.width,
                     'color': _options.oldColor
                 });
                 _elements._$newPercentText.css({
-                    'top': '-20px',
+                    'top': '0px',
                     'line-height': _options.width,
                     'color': _options.color
                 });
             }
 
             //设置数值
-            _elements._$oldPercentText.text(_options.oldText + _options.oldVal + '%');
+            _elements._$oldPercentText.text(_options.oldText + _options.value + '%');
             _elements._$newPercentText.text(_options.newText + _this.newProgressBarVal + '%');
 
 
-            if (!_options.showNum) {
+            if (!_options.showPercent) {
                 _elements._$oldPercentText.hide();
                 _elements._$newPercentText.hide();
             }
@@ -231,7 +238,7 @@
                 _elements._$oldPercentText.hide();
                 _elements._$progressBarOldValColor.hide();
                 _elements._$progressBarNewValColor.css('opacity', 1);
-                if (_options.showNum) {
+                if (_options.showPercent) {
                     _elements._$newPercentText.css('opacity', 1);
                 }
             }
@@ -245,8 +252,8 @@
             });
 
             let _border = 'none';
-            if (_options.borderSize !== null && _options.borderLine !== null && _options.borderColor !== null) {
-                _border = _options.borderSize + ' ' + _options.borderLine + ' ' + _options.borderColor;
+            if (_options.border !== null) {
+                _border = _options.border
             }
             _elements._$progressbarContent.css({
                 'border': _border,
@@ -272,7 +279,7 @@
                 _this.getElements();
                 _this.setStyle();
                 _this.options.success({
-                    'oldVal': _this.options.oldVal
+                    'value': _this.options.value
                 });
             }, 500);
         },
@@ -287,7 +294,7 @@
                 console.error('当前设置容器参数：options->container=“' + _this.options.container + '”');
                 return;
             }
-            _this.newProgressBarVal = _this.options.oldVal;
+            _this.newProgressBarVal = _this.options.value;
             _this.render();
             console.log('%c  ——作者信息：——————————————————————————', 'color:#FFB800')
             console.log('%c 丨 作者昵称：提拉米苏的呆猫（Evan Mo）  丨', 'color:#009688')
