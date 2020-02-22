@@ -10,20 +10,29 @@
     <style>
         .demo-progressbar-1 {
             margin: 0 auto;
-            margin-top: 200px;
+            margin-top: 50px;
             margin-bottom: 20px;
-            width: 800px;
+            /* width: 800px; */
+            width: 90%;
             padding: 20px;
+            text-align: center;
         }
         
         .demo-progressbar-btns {
             text-align: center;
             padding: 20px;
+            margin: 20px auto;
+            display: none;
+        }
+        
+        .default-values {
+            text-align: center;
         }
         
         .demo-progressbar-btns>button {
-            width: 20%;
+            width: 160px;
             padding: 4px;
+            margin: 5px 0;
         }
         
         .progressbar-set-abs {
@@ -31,13 +40,47 @@
         }
         
         .progressbar-set-abs>button {
-            width: 20%;
+            width: 160px;
+            padding: 4px;
+        }
+        
+        button {
             padding: 4px;
         }
         
         input[name=ProgressbarSetVal] {
-            width: 60%;
+            width: 150px;
             padding: 4px;
+        }
+        
+        input[type=radio] {
+            margin-left: 56px;
+        }
+        
+        .val-item {
+            padding: 3px 0;
+        }
+        
+        .val-item label {
+            width: 145px;
+            display: inline-block;
+            text-align: right;
+        }
+        
+        .val-item>input {
+            padding: 4px;
+        }
+        
+        .create-btn {
+            margin-top: 20px;
+        }
+        
+        .create-btn button {
+            width: 300px;
+            background-color: #5fb878;
+            border: 0;
+            padding: 8px;
+            color: #fff;
         }
     </style>
 </head>
@@ -46,9 +89,74 @@
 
 
     <div class="demo-progressbar-1">
-        进度条加载中...
+        点击生成按钮，开始生成进度条...
     </div>
 
+    <div class="default-values">
+        <form action="" name="ValuesForm">
+            <div class="val-item">
+                <label for="">进度条大小</label>
+                <input type="text" name="width" value="20px" placeholder="" required>
+            </div>
+            <div class="val-item">
+                <label for="">文字大小</label>
+                <input type="text" name="fontSize" value="14px" placeholder="" required>
+            </div>
+            <div class="val-item">
+                <label for="">运动速度</label>
+                <input type="text" name="speed" value=".8s" placeholder="" required>
+            </div>
+            <div class="val-item">
+                <label for="">圆角</label>
+                <input type="text" name="radius" value="20px" placeholder="" required>
+            </div>
+            <div class="val-item">
+                <label for="">边框样式</label>
+                <input type="text" name="border" value="" placeholder="格式：1px solid #393d49" required>
+            </div>
+            <div class="val-item">
+                <label for="">是否显示百分比</label>
+                <input type="radio" name="showPercent" value="true" required checked>是
+                <input type="radio" name="showPercent" value="false" required>否
+            </div>
+            <div class="val-item">
+                <label for="">是否显示已完成进度</label>
+                <input type="radio" name="showOldVal" value="true" required checked>是
+                <input type="radio" name="showOldVal" value="false" required>否
+            </div>
+            <div class="val-item">
+                <label for="">已完成进度的值</label>
+                <input type="text" name="value" value="90" placeholder="" required>
+            </div>
+            <div class="val-item">
+                <label for="">百分比文字位置</label>
+                <input type="text" name="textAlign" value="c" placeholder="c=居中  t=顶部  b=底部" required>
+            </div>
+            <div class="val-item">
+                <label for="">已完成进度的文字</label>
+                <input type="text" name="oldText" value="已完成" placeholder="" required>
+            </div>
+            <div class="val-item">
+                <label for="">正在完成提示文字</label>
+                <input type="text" name="newText" value="完善中" placeholder="" required>
+            </div>
+            <div class="val-item">
+                <label for="">进度条颜色</label>
+                <input type="text" name="color" value="#5FB878" placeholder="" required>
+            </div>
+            <div class="val-item">
+                <label for="">进度条背景颜色</label>
+                <input type="text" name="bgColor" value="#e2e2e2" placeholder="" required>
+            </div>
+            <div class="val-item">
+                <label for="">已完成进度颜色</label>
+                <input type="text" name="oldColor" value="#393D49" placeholder="" required>
+            </div>
+            <div class="create-btn">
+                <button type="button" class="" id="Create">生成/重绘进度条</button>
+            </div>
+        </form>
+    </div>
     <div class="demo-progressbar-btns">
         <button type="button" class="progressbar-sub">步进减少</button>
         <button type="button" class="progressbar-add">步进增加</button>
@@ -63,55 +171,86 @@
     <!-- <script type="text/javascript" src="./libs/jquery.js"></script> -->
     <script type="text/javascript" src="./js/tzProgressBar.js"></script>
     <script>
+        (function($) {
+            $.fn.serializeObject = function() {
+                var serializeObj = {};
+                $(this.serializeArray()).each(function() {
+                    serializeObj[this.name] = this.value;
+                });
+                return serializeObj;
+            };
+        })(jQuery);
         window.onload = function() {
+            let _toBool = function(boolStr) {
+                if (boolStr === 'true') return true;
+                else return false;
+            };
+
             let _demoVal = 0,
                 _timer = null;
-            const _tzProgressBar = new TzProgressBar({
-                container: '.demo-progressbar-1',
-                oldVal: 80,
-                sub: function(num) {
-                    _demoVal = num;
-                },
-                add: function(num) {
-                    _demoVal = num;
-                },
-                success: function(res) {
-                    _demoVal = res.oldVal;
-                    $('.progressbar-sub').off('click').on('click', function() {
-                        clearInterval(_timer);
-                        _tzProgressBar.sub(5); //设置新的值
-                    });
-                    $('.progressbar-add').off('click').on('click', function() {
-                        clearInterval(_timer);
-                        _tzProgressBar.add(3); //设置新的值
-                    });
 
-                    $('.progressbar-set').off('click').on('click', function() {
-                        clearInterval(_timer);
-                        let _num = $('input[name=ProgressbarSetVal]').val();
-                        if (_num < 0) _num = 0;
-                        else if (_num > 100) _num = 100;
-                        _tzProgressBar.setNewVal(_num); //设置新的值
-                    });
-
-                    //模拟动态减少
-                    $('.progressbar-step-1').off('click').on('click', function() {
-                        clearInterval(_timer);
-                        _timer = setInterval(function() {
-                            if (_demoVal > 0) _tzProgressBar.sub(1); //设置新的值
-                            else clearInterval(_timer);
-                        }, 100)
-                    });
-                    //模拟动态增加
-                    $('.progressbar-step-2').off('click').on('click', function() {
-                        clearInterval(_timer);
-                        _timer = setInterval(function() {
-                            if (_demoVal < 100) _tzProgressBar.add(1); //设置新的值
-                            else clearInterval(_timer);
-                        }, 100)
-                    });
-                }
+            $('#Create').off('click').on('click', function() {
+                let _values = $('form[name=ValuesForm]').serializeObject();
+                initTzProgressBar(_values);
+                console.log(_values)
             });
+            let initTzProgressBar = function(options) {
+                let _options = {
+                    container: '.demo-progressbar-1',
+                    // oldVal: 80,
+                    showOldVal: false,
+                    sub: function(num) {
+                        _demoVal = num;
+                    },
+                    add: function(num) {
+                        _demoVal = num;
+                    },
+                    success: function(res) {
+                        $('.demo-progressbar-btns').show();
+                        _demoVal = res.value;
+                        $('.progressbar-sub').off('click').on('click', function() {
+                            clearInterval(_timer);
+                            _tzProgressBar.sub(5); //设置新的值
+                        });
+                        $('.progressbar-add').off('click').on('click', function() {
+                            clearInterval(_timer);
+                            _tzProgressBar.add(3); //设置新的值
+                        });
+
+                        $('.progressbar-set').off('click').on('click', function() {
+                            clearInterval(_timer);
+                            let _num = $('input[name=ProgressbarSetVal]').val();
+                            if (_num < 0) _num = 0;
+                            else if (_num > 100) _num = 100;
+                            _tzProgressBar.setNewVal(_num); //设置新的值
+                        });
+
+                        //模拟动态减少
+                        $('.progressbar-step-1').off('click').on('click', function() {
+                            clearInterval(_timer);
+                            _timer = setInterval(function() {
+                                if (_demoVal > 0) _tzProgressBar.sub(1); //设置新的值
+                                else clearInterval(_timer);
+                            }, 100)
+                        });
+                        //模拟动态增加
+                        $('.progressbar-step-2').off('click').on('click', function() {
+                            clearInterval(_timer);
+                            _timer = setInterval(function() {
+                                if (_demoVal < 100) _tzProgressBar.add(1); //设置新的值
+                                else clearInterval(_timer);
+                            }, 100)
+                        });
+                    }
+                }
+                options.showPercent = _toBool(options.showPercent);
+                options.showOldVal = _toBool(options.showOldVal);
+
+                $.extend(_options, options);
+                const _tzProgressBar = new TzProgressBar(_options);
+            };
+
+            initTzProgressBar($('form[name=ValuesForm]').serializeObject());
         }
     </script>
 </body>
