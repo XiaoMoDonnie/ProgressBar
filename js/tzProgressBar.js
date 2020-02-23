@@ -3,14 +3,15 @@
     const TzProgressBar = function(options) {
         //TzProgressBar(options||{}) 或者 new TzProgressBar(options||{})都可以使用 TzProgressBar 方法
         if (!(this instanceof TzProgressBar)) { return new TzProgressBar(options); }
+
         this.options = this.extend({
             container: null, //容器
-            width: '20px', //进度条大小
+            size: '20px', //进度条大小
             fontSize: '14px', //文字大小 
             radius: '20px', //进度条圆角
-            speed: '', //进度条的速度
-            border: null, //进度条边框 
-            showPercent: true, //是否显示百分比
+            speed: '.8s', //进度条的速度
+            border: 'none', //进度条边框 
+            showPercent: true, //是否显示百分比文字提示
             maxLeft: 90, //控制文本范围最大值，以免超出进度条范围 移动端测试 适合85 pc端100
             textLeft: 15, //用于控制进度条文本位置精准度，以免超出进度条范围
             textAlign: 'c', //c=居中  t=顶部  b=底部
@@ -19,15 +20,16 @@
             showOldVal: true, //是否显示旧的值
             color: '#5FB878', //进度条颜色
             bgColor: '#e2e2e2', //进度条背景颜色
-            oldColor: '#393D49', //旧的进度条颜色
+            oldColor: '#393D49', //已完成的进度条颜色
             textColor: '#fff', //开启文字居中后生效
-            value: 90, //已完成进度的值 
-            sub: function(callback) {}, //进度条减少的时候回调
+            value: 0, //已完成进度的值 
+            sub: function(callback) {}, //进度条减少时候的回调
             add: function(callback) {}, //进度条增加时候的回调
-            success: function(callback) {}, //完成时候的回调
+            success: function(callback) {}, //初始化完成时候的回调
         }, options);
         this.init(); //初始化  
     }
+    let _isShowInfo = false;
     TzProgressBar.prototype = {
         /**
          * 扩展合并参数
@@ -58,6 +60,7 @@
         },
         /** 步进式设置进度条的值 */
         sub: function(val) {
+            val = Number(val);
             let _this = this;
             let _elements = _this.elements;
             let _options = _this.options;
@@ -96,11 +99,11 @@
         },
         /** 步进式设置进度条的值 */
         add: function(val) {
+            val = Number(val);
             let _this = this;
             let _elements = _this.elements;
             let _options = _this.options;
             if (_this.newProgressBarVal >= 100) return;
-
             _this.newProgressBarVal += val;
             if (_this.newProgressBarVal >= 100) _this.newProgressBarVal = 100;
 
@@ -136,13 +139,12 @@
         },
         /** 直接设置进度条的值 */
         setNewVal: function(newVal) {
+            newVal = Number(newVal);
             let _this = this;
             if (newVal < 0) newVal = 0;
             else if (newVal > 100) newVal = 100;
-            console.log('TODO=>设置新的值：' + newVal);
-
             let _newVal = newVal - _this.newProgressBarVal;
-            console.log(_newVal)
+
             if (_newVal >= 0) {
                 _this.elements._$newPercentText.css({
                     'color': _this.options.textColor
@@ -215,12 +217,12 @@
 
                 _elements._$oldPercentText.css({
                     'top': '0px',
-                    'line-height': _options.width,
+                    'line-height': _options.size,
                     'color': _options.oldColor
                 });
                 _elements._$newPercentText.css({
                     'top': '0px',
-                    'line-height': _options.width,
+                    'line-height': _options.size,
                     'color': _options.color
                 });
             }
@@ -244,11 +246,11 @@
             }
             _elements._$oldPercentText.css({
                 'font-size': _options.fontSize,
-                'line-height': _options.width
+                'line-height': _options.size
             });
             _elements._$newPercentText.css({
                 'font-size': _options.fontSize,
-                'line-height': _options.width
+                'line-height': _options.size
             });
 
             let _border = 'none';
@@ -258,7 +260,7 @@
             _elements._$progressbarContent.css({
                 'border': _border,
                 'border-radius': _options.radius,
-                'height': _options.width
+                'height': _options.size
             });
         },
         render: function() {
@@ -294,17 +296,19 @@
                 console.error('当前设置容器参数：options->container=“' + _this.options.container + '”');
                 return;
             }
-            _this.newProgressBarVal = _this.options.value;
+            _this.newProgressBarVal = Number(_this.options.value);
             _this.render();
-            console.log('%c  ——作者信息：——————————————————————————', 'color:#FFB800')
-            console.log('%c 丨 作者昵称：提拉米苏的呆猫（Evan Mo）  丨', 'color:#009688')
-            console.log('%c 丨 E-Mail：tzxiaomo@outlook.com       丨', 'color:#01AAED')
-            console.log('%c 丨 WebSite：http://www.925i.cn        丨', 'color:#FF5722')
-            console.log('%c  —————————————————————————————————————', 'color:#FFB800')
-            console.log("    ");
-            console.log('%c 进度条初始化成功', 'color:#009688');
-            console.log("    ");
-
+            if (!_isShowInfo) {
+                _isShowInfo = true;
+                console.log('%c  ——作者信息：——————————————————————————', 'color:#FFB800')
+                console.log('%c 丨 作者昵称：提拉米苏的呆猫（Evan Mo）  丨', 'color:#009688')
+                console.log('%c 丨 E-Mail：tzxiaomo@outlook.com       丨', 'color:#01AAED')
+                console.log('%c 丨 WebSite：http://www.925i.cn        丨', 'color:#FF5722')
+                console.log('%c  —————————————————————————————————————', 'color:#FFB800')
+                console.log("    ");
+                console.log('%c 进度条初始化成功', 'color:#009688');
+                console.log("    ");
+            }
         }
     };
     window.TzProgressBar = TzProgressBar;
