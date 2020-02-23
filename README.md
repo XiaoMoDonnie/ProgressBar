@@ -2,6 +2,7 @@
  一个简单的进度条封装,本项目基于Jquery,如果您有需求可以自己修改为js版本
 
 ## 功能描述
+
   #### 1、普通的进度条
   #### 2、可以配置已经完成的进度显示
   #### 3、可以配置是否显示百分比的值和文本内容
@@ -27,36 +28,36 @@
     </div>
 ```
 
-### js,以下均为默认值，不配置时候使用以下的值
+### js实例化,以下均为默认值，不配置时候默认使用以下的值
 ```
   const _tzProgressBar = new TzProgressBar({
-            container: 'demo-progressbar-1', //容器
-            width: '20px', //进度条大小
-            fontSize: '14px', //文字大小 
-            radius: '20px', //进度条圆角
-            speed: '', //进度条的速度
-            border: null, //进度条边框 
-            showPercent: true, //是否显示百分比
-            maxLeft: 90, //控制文本范围最大值，以免超出进度条范围 移动端测试 适合85 pc端100
-            textLeft: 15, //用于控制进度条文本位置精准度，以免超出进度条范围
-            textAlign: 'c', //c=居中  t=顶部  b=底部
-            oldText: '已完成', //已完成的提示文字
-            newText: '完善中', //正在完成提示文字
-            showOldVal: true, //是否显示旧的值
-            color: '#5FB878', //进度条颜色
-            bgColor: '#e2e2e2', //进度条背景颜色
-            oldColor: '#393D49', //旧的进度条颜色
-            textColor: '#fff', //开启文字居中后生效
-            value: 90, //已完成进度的值 
-            sub: function(callback) {}, //进度条减少的时候回调
-            add: function(callback) {}, //进度条增加时候的回调
-            success: function(callback) {}, //完成时候的回调
+        container: 'demo-progressbar-1', //容器
+        size: '20px', //进度条大小
+        fontSize: '14px', //文字大小 
+        radius: '20px', //进度条圆角
+        speed: '', //进度条的速度
+        border: null, //进度条边框 
+        showPercent: true, //是否显示百分比
+        maxLeft: 90, //控制文本范围最大值，以免超出进度条范围 移动端测试 适合85 pc端100
+        textLeft: 15, //用于控制进度条文本位置精准度，以免超出进度条范围
+        textAlign: 'c', //c=居中  t=顶部  b=底部
+        oldText: '已完成', //已完成的提示文字
+        newText: '完善中', //正在完成提示文字
+        showOldVal: true, //是否显示旧的值
+        color: '#5FB878', //进度条颜色
+        bgColor: '#e2e2e2', //进度条背景颜色
+        oldColor: '#393D49', //旧的进度条颜色
+        textColor: '#fff', //开启文字居中后生效
+        value: 0, //已完成进度的值 
+        sub: function(callback) {}, //进度条减少的时候回调
+        add: function(callback) {}, //进度条增加时候的回调
+        success: function(callback) {}, //完成时候的回调
      });
      
-     
-      _tzProgressBar.sub(5); //设置新的值 减少进度条的值
-      _tzProgressBar.add(3); //设置新的值 增加进度条的值
-      _tzProgressBar.setNewVal(_num); //设置新的值 直接设置进度条的具体值
+     //控制进度条进度
+      _tzProgressBar.sub(填写具体数值); //设置新的值 减少进度条的值
+      _tzProgressBar.add(填写具体数值); //设置新的值 增加进度条的值
+      _tzProgressBar.setNewVal(填写具体的数值：0-100); //设置新的值 直接设置进度条的具体值
 
 ```
 
