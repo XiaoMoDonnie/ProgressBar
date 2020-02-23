@@ -115,7 +115,7 @@
                 <input type="text" name="border" value="" placeholder="格式：1px solid #393d49" required>
             </div>
             <div class="val-item">
-                <label for="">是否显示百分比</label>
+                <label for="">是否显示百分比文字</label>
                 <input type="radio" name="showPercent" value="true" required checked>是
                 <input type="radio" name="showPercent" value="false" required>否
             </div>
@@ -126,7 +126,7 @@
             </div>
             <div class="val-item">
                 <label for="">已完成进度的值</label>
-                <input type="text" name="value" value="50" placeholder="" required>
+                <input type="number" name="value" value="50" placeholder="" required>
             </div>
             <div class="val-item">
                 <label for="">百分比文字位置</label>
@@ -192,12 +192,10 @@
             $('#Create').off('click').on('click', function() {
                 let _values = $('form[name=ValuesForm]').serializeObject();
                 initTzProgressBar(_values);
-                console.log(_values)
             });
             let initTzProgressBar = function(options) {
                 let _options = {
                     container: '.demo-progressbar-1',
-                    // oldVal: 80,
                     showOldVal: false,
                     sub: function(num) {
                         _demoVal = num;
@@ -222,6 +220,7 @@
                             let _num = $('input[name=ProgressbarSetVal]').val();
                             if (_num < 0) _num = 0;
                             else if (_num > 100) _num = 100;
+                            console.log(_num)
                             _tzProgressBar.setNewVal(_num); //设置新的值
                         });
 
@@ -247,6 +246,7 @@
                 options.showOldVal = _toBool(options.showOldVal);
 
                 $.extend(_options, options);
+                //初始化 示例
                 const _tzProgressBar = new TzProgressBar(_options);
             };
 
