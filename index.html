@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="author" content="提拉米苏的呆猫（studio@925i.cn）">
+    <meta name="author" content="Evan Mo（studio@925i.cn）">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>一个简单的进度条封装</title>
     <link rel="stylesheet" href="./css/tzProgressBar.css">
@@ -36,7 +36,8 @@
         }
         
         .progressbar-set-abs {
-            padding: 20px 0;
+            /* padding: 20px 0; */
+            margin-bottom: 4px;
         }
         
         .progressbar-set-abs>button {
@@ -44,12 +45,12 @@
             padding: 4px;
         }
         
-        button {
+        .progressbar-set-abs>input {
+            width: 150px;
             padding: 4px;
         }
         
-        input[name=ProgressbarSetVal] {
-            width: 150px;
+        button {
             padding: 4px;
         }
         
@@ -158,12 +159,24 @@
         </form>
     </div>
     <div class="demo-progressbar-btns">
-        <button type="button" class="progressbar-sub">步进减少</button>
-        <button type="button" class="progressbar-add">步进增加</button>
-        <button type="button" class="progressbar-step-1">动态减少</button>
-        <button type="button" class="progressbar-step-2">动态增加</button>
         <div class="progressbar-set-abs">
-            <input type="number" value="0" name="ProgressbarSetVal" max="100" min="0" maxlength="3" placeholder="请输入进度条的值">
+            <input type="number" value="1" name="ProgressbarStepSubVal" max="100" min="0" maxlength="3" placeholder="请输入值">
+            <button type="button" class="progressbar-step-1">动态减少</button>
+        </div>
+        <div class="progressbar-set-abs">
+            <input type="number" value="1" name="ProgressbarStepAddVal" max="100" min="0" maxlength="3" placeholder="请输入值">
+            <button type="button" class="progressbar-step-2">动态增加</button>
+        </div>
+        <div class="progressbar-set-abs">
+            <input type="number" value="3" name="ProgressbarSubVal" max="100" min="0" maxlength="3" placeholder="请输入值">
+            <button type="button" class="progressbar-sub">步进减少</button>
+        </div>
+        <div class="progressbar-set-abs">
+            <input type="number" value="5" name="ProgressbarAddVal" max="100" min="0" maxlength="3" placeholder="请输入值">
+            <button type="button" class="progressbar-add">步进增加</button>
+        </div>
+        <div class="progressbar-set-abs">
+            <input type="number" value="0" name="ProgressbarSetVal" max="100" min="0" maxlength="3" placeholder="请输入值">
             <button type="button" class="progressbar-set">设置固定值</button>
         </div>
     </div>
@@ -208,11 +221,17 @@
                         _demoVal = res.value;
                         $('.progressbar-sub').off('click').on('click', function() {
                             clearInterval(_timer);
-                            _tzProgressBar.sub(5); //设置新的值
+                            let _num = $('input[name=ProgressbarSubVal]').val();
+                            if (_num < 0) _num = 0;
+                            else if (_num > 100) _num = 100;
+                            _tzProgressBar.sub(_num); //设置新的值
                         });
                         $('.progressbar-add').off('click').on('click', function() {
                             clearInterval(_timer);
-                            _tzProgressBar.add(3); //设置新的值
+                            let _num = $('input[name=ProgressbarAddVal]').val();
+                            if (_num < 0) _num = 0;
+                            else if (_num > 100) _num = 100;
+                            _tzProgressBar.add(_num); //设置新的值
                         });
 
                         $('.progressbar-set').off('click').on('click', function() {
@@ -227,16 +246,22 @@
                         //模拟动态减少
                         $('.progressbar-step-1').off('click').on('click', function() {
                             clearInterval(_timer);
+                            let _num = $('input[name=ProgressbarStepSubVal]').val();
+                            if (_num < 0) _num = 0;
+                            else if (_num > 100) _num = 100;
                             _timer = setInterval(function() {
-                                if (_demoVal > 0) _tzProgressBar.sub(1); //设置新的值
+                                if (_demoVal > 0) _tzProgressBar.sub(_num); //设置新的值
                                 else clearInterval(_timer);
                             }, 100)
                         });
                         //模拟动态增加
                         $('.progressbar-step-2').off('click').on('click', function() {
                             clearInterval(_timer);
+                            let _num = $('input[name=ProgressbarStepAddVal]').val();
+                            if (_num < 0) _num = 0;
+                            else if (_num > 100) _num = 100;
                             _timer = setInterval(function() {
-                                if (_demoVal < 100) _tzProgressBar.add(1); //设置新的值
+                                if (_demoVal < 100) _tzProgressBar.add(_num); //设置新的值
                                 else clearInterval(_timer);
                             }, 100)
                         });
