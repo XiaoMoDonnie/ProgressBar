@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="author" content="Evan Mo（studio@925i.cn）">
+    <meta name="author" content="提拉米苏的呆猫（studio@925i.cn）">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>一个简单的进度条封装</title>
     <link rel="stylesheet" href="./css/tzProgressBar.css">
@@ -96,23 +96,19 @@
         <form action="" name="ValuesForm">
             <div class="val-item">
                 <label for="">进度条大小</label>
-                <input type="text" name="width" value="20px" placeholder="" required>
-            </div>
-            <div class="val-item">
-                <label for="">文字大小</label>
-                <input type="text" name="fontSize" value="14px" placeholder="" required>
+                <input type="text" name="size" value="20px" placeholder="默认：20px" required>
             </div>
             <div class="val-item">
                 <label for="">运动速度</label>
-                <input type="text" name="speed" value=".8s" placeholder="" required>
+                <input type="text" name="speed" value="0.8s" placeholder="默认：0.8s" required>
             </div>
             <div class="val-item">
                 <label for="">圆角</label>
-                <input type="text" name="radius" value="20px" placeholder="" required>
+                <input type="text" name="radius" value="20px" placeholder="默认：20px" required>
             </div>
             <div class="val-item">
                 <label for="">边框样式</label>
-                <input type="text" name="border" value="" placeholder="格式：1px solid #393d49" required>
+                <input type="text" name="border" value="" placeholder="默认：1px solid #393d49" required>
             </div>
             <div class="val-item">
                 <label for="">是否显示百分比文字</label>
@@ -126,31 +122,35 @@
             </div>
             <div class="val-item">
                 <label for="">已完成进度的值</label>
-                <input type="number" name="value" value="50" placeholder="" required>
+                <input type="number" name="value" value="0" placeholder="默认：0" required>
+            </div>
+            <div class="val-item">
+                <label for="">百分比文字大小</label>
+                <input type="text" name="fontSize" value="14px" placeholder="默认：14px" required>
             </div>
             <div class="val-item">
                 <label for="">百分比文字位置</label>
-                <input type="text" name="textAlign" value="c" placeholder="c=居中  t=顶部  b=底部" required>
+                <input type="text" name="textAlign" value="c" placeholder="默认:c,居中c,顶部t,底部b" required>
             </div>
             <div class="val-item">
                 <label for="">已完成进度的文字</label>
-                <input type="text" name="oldText" value="已完成" placeholder="" required>
+                <input type="text" name="oldText" value="已完成" placeholder="默认：已完成" required>
             </div>
             <div class="val-item">
                 <label for="">正在完成提示文字</label>
-                <input type="text" name="newText" value="完善中" placeholder="" required>
+                <input type="text" name="newText" value="完善中" placeholder="默认：完善中" required>
             </div>
             <div class="val-item">
                 <label for="">进度条颜色</label>
-                <input type="text" name="color" value="#5FB878" placeholder="" required>
+                <input type="text" name="color" value="#5FB878" placeholder="默认：#5FB878" required>
             </div>
             <div class="val-item">
                 <label for="">进度条背景颜色</label>
-                <input type="text" name="bgColor" value="#e2e2e2" placeholder="" required>
+                <input type="text" name="bgColor" value="#e2e2e2" placeholder="默认：#e2e2e2" required>
             </div>
             <div class="val-item">
                 <label for="">已完成进度颜色</label>
-                <input type="text" name="oldColor" value="#393D49" placeholder="" required>
+                <input type="text" name="oldColor" value="#393D49" placeholder="默认：#393D49" required>
             </div>
             <div class="create-btn">
                 <button type="button" class="" id="Create">生成/重绘进度条</button>
