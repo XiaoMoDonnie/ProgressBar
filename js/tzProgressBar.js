@@ -9,8 +9,10 @@
             size: '20px', //进度条大小
             fontSize: '14px', //文字大小 
             radius: '20px', //进度条圆角
-            speed: '.8s', //进度条的速度
+            speed: '0.6s', //进度条的速度
             border: 'none', //进度条边框 
+            showStripes: false, //是否显示条纹效果
+            showAnimation: false, //是否显示动画效果
             showPercent: true, //是否显示百分比文字提示
             maxLeft: 90, //控制文本范围最大值，以免超出进度条范围 移动端测试 适合85 pc端100
             textLeft: 15, //用于控制进度条文本位置精准度，以免超出进度条范围
@@ -161,16 +163,16 @@
 
             //设置样式 
             _elements._$progressbarStyle.css({
-                'transition': 'all ' + _options.speed + ' ease'
+                'transition': 'all ' + _options.speed + ' ease 0s'
             });
             let _max = _options.value >= _options.maxLeft ? _options.maxLeft : _options.value;
 
             _elements._$oldPercentText.css({
-                'transition': 'all ' + _options.speed + ' ease',
+                'transition': 'all ' + _options.speed + ' ease 0s',
                 'left': (_max - _options.textLeft) < 0 ? 10 : (_max - _options.textLeft) + '%',
             });
             _elements._$newPercentText.css({
-                'transition': 'all ' + _options.speed + ' ease',
+                'transition': 'all ' + _options.speed + ' ease 0s',
                 'left': (_max - _options.textLeft) < 0 ? 10 : (_max - _options.textLeft) + '%'
             });
 
@@ -181,6 +183,12 @@
                 'width': _options.value + '%',
                 'background-color': _options.oldColor,
             });
+            if (_options.showStripes) {
+                _elements._$progressBarNewValColor.addClass('stripes');
+                if (_options.showAnimation) {
+                    _elements._$progressBarNewValColor.addClass('active');
+                }
+            }
             _elements._$progressBarNewValColor.css({
                 'width': _this.newProgressBarVal + '%',
                 'background-color': _options.color,
