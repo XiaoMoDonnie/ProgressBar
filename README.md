@@ -36,7 +36,9 @@
         fontSize: '14px', //文字大小 
         radius: '20px', //进度条圆角
         speed: '', //进度条的速度
-        border: null, //进度条边框 
+        border: 'none', //进度条边框 
+        showStripes: false, //是否显示条纹效果
+        showAnimation: false, //是否显示动画效果
         showPercent: true, //是否显示百分比
         maxLeft: 90, //控制文本范围最大值，以免超出进度条范围 移动端测试 适合85 pc端100
         textLeft: 15, //用于控制进度条文本位置精准度，以免超出进度条范围
@@ -48,7 +50,7 @@
         bgColor: '#e2e2e2', //进度条背景颜色
         oldColor: '#393D49', //旧的进度条颜色
         textColor: '#fff', //开启文字居中后生效
-        value: 0, //已完成进度的值 
+        value: 90, //已完成进度的值 
         sub: function(callback) {}, //进度条减少的时候回调
         add: function(callback) {}, //进度条增加时候的回调
         success: function(callback) {}, //完成时候的回调
@@ -61,3 +63,8 @@
 
 ```
 
+
+## 版本更新
+
+### 2020-02-24 新增可配置进度条的动画效果。
+### 2020-02-22 新增可配置进度条百分比文字显示位置。
