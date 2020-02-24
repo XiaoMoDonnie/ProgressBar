@@ -101,7 +101,7 @@
             </div>
             <div class="val-item">
                 <label for="">运动速度</label>
-                <input type="text" name="speed" value="0.8s" placeholder="默认：0.8s" required>
+                <input type="text" name="speed" value="0.6s" placeholder="默认：0.6s" required>
             </div>
             <div class="val-item">
                 <label for="">圆角</label>
@@ -109,7 +109,17 @@
             </div>
             <div class="val-item">
                 <label for="">边框样式</label>
-                <input type="text" name="border" value="" placeholder="默认：1px solid #393d49" required>
+                <input type="text" name="border" value="none" placeholder="默认：1px solid #393d49" required>
+            </div>
+            <div class="val-item">
+                <label for="">是否显示条纹效果</label>
+                <input type="radio" name="showStripes" value="true" required checked>是
+                <input type="radio" name="showStripes" value="false" required>否
+            </div>
+            <div class="val-item">
+                <label for="">是否显示动画效果</label>
+                <input type="radio" name="showAnimation" value="true" required checked>是
+                <input type="radio" name="showAnimation" value="false" required>否
             </div>
             <div class="val-item">
                 <label for="">是否显示百分比文字</label>
@@ -210,12 +220,15 @@
                 let _options = {
                     container: '.demo-progressbar-1',
                     showOldVal: false,
+                    /** 步进减少时候回调 */
                     sub: function(num) {
                         _demoVal = num;
                     },
+                    /** 步进增加时候回调 */
                     add: function(num) {
                         _demoVal = num;
                     },
+                    /** 初始化成功回调 */
                     success: function(res) {
                         $('.demo-progressbar-btns').show();
                         _demoVal = res.value;
@@ -269,9 +282,10 @@
                 }
                 options.showPercent = _toBool(options.showPercent);
                 options.showOldVal = _toBool(options.showOldVal);
-
+                options.showStripes = _toBool(options.showStripes);
+                options.showAnimation = _toBool(options.showAnimation);
                 $.extend(_options, options);
-                //初始化 示例
+                //初始化示例
                 const _tzProgressBar = new TzProgressBar(_options);
             };
 
