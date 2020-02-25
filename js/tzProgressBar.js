@@ -6,20 +6,20 @@
 
         this.options = this.extend({
             container: null, //容器
-            size: '20px', //进度条大小
-            fontSize: '14px', //文字大小 
-            radius: '20px', //进度条圆角
+            size: '12px', //进度条大小
+            fontSize: '12px', //文字大小 
+            radius: '2px', //进度条圆角
             speed: '0.6s', //进度条的速度
             border: 'none', //进度条边框 
-            showStripes: false, //是否显示条纹效果
-            showAnimation: false, //是否显示动画效果
+            showStripes: true, //是否显示条纹效果
+            showAnimation: true, //是否显示动画效果
             showPercent: true, //是否显示百分比文字提示
             maxLeft: 90, //控制文本范围最大值，以免超出进度条范围 移动端测试 适合85 pc端100
             textLeft: 15, //用于控制进度条文本位置精准度，以免超出进度条范围
             textAlign: 'c', //c=居中  t=顶部  b=底部
             oldText: '已完成', //已完成的提示文字
             newText: '完善中', //正在完成提示文字
-            showOldVal: true, //是否显示旧的值
+            showOldVal: false, //是否显示旧的值
             color: '#5FB878', //进度条颜色
             bgColor: '#e2e2e2', //进度条背景颜色
             oldColor: '#393D49', //已完成的进度条颜色
@@ -239,6 +239,23 @@
             _elements._$oldPercentText.text(_options.oldText + _options.value + '%');
             _elements._$newPercentText.text(_options.newText + _this.newProgressBarVal + '%');
 
+            _elements._$oldPercentText.css({
+                'font-size': _options.fontSize,
+                'line-height': _options.size
+            });
+            _elements._$newPercentText.css({
+                'font-size': _options.fontSize,
+                'line-height': _options.size
+            });
+
+            _elements._$progressbarContent.css({
+                'border': _options.border,
+                'border-radius': _options.radius,
+                'height': _options.size
+            });
+            _elements._$progressbarStyle.css({
+                'border-radius': _options.radius
+            });
 
             if (!_options.showPercent) {
                 _elements._$oldPercentText.hide();
@@ -252,24 +269,6 @@
                     _elements._$newPercentText.css('opacity', 1);
                 }
             }
-            _elements._$oldPercentText.css({
-                'font-size': _options.fontSize,
-                'line-height': _options.size
-            });
-            _elements._$newPercentText.css({
-                'font-size': _options.fontSize,
-                'line-height': _options.size
-            });
-
-            let _border = 'none';
-            if (_options.border !== null) {
-                _border = _options.border
-            }
-            _elements._$progressbarContent.css({
-                'border': _border,
-                'border-radius': _options.radius,
-                'height': _options.size
-            });
         },
         render: function() {
             let _this = this;
