@@ -10,7 +10,7 @@
   #### 5、具体功能可以查看初始化配置参数和示例
 
 ## 在线演示
-  [进度条在线示例传送门](https://xiaomodonnie.github.io/ProgressBar/index.html)
+  [进度条在线示例传送门](https://okay-xiaomo.github.io/ProgressBar/index.html)
 
 ## 初始化
 
